@@ -1,16 +1,4 @@
-from tinydb import TinyDB
-
-"""this class implement a simple embedded db nosql with tinydb"""
-
-class activitiesStorage():
-
-    def __init__(self):
-        self.db_name = "storage.json"
-        self.db = TinyDB(self.db_name)
-
-    #sto facendo un inserimento sample di dati, ipotizzando alcune attività del mese di febbraio
-    def add_data(self):
-        dati_da_inserire = [{"mese" :  "Febbraio", "Attività" : "programmazione ad oggetti" },
+[{"mese" :  "Febbraio", "Attività" : "programmazione ad oggetti" },
                              {"mese" : "Febbraio", "Attività" : "erediterietà e polimorfismo" },
                              {"mese" : "Febbraio", "Attività" : "software design pattern" },
                              {"mese" : "Febbraio", "Attività" : "esercitazioni con programmazione ad oggetti in python" },
@@ -28,17 +16,3 @@ class activitiesStorage():
                              {"mese" : "Marzo", "Attività" : "deployement di una build su server nexus locale" },
                              {"mese" : "Marzo", "Attività" : "esercitazioni CI/CD" },
                             ]
-
-        self.db.insert_multiple(dati_da_inserire)
-    
-    def clear_data(self):
-        self.db.truncate()
-    
-    def view_data(self):
-        for item in self.db:
-            print(item)
-
-    def search_month():
-        pass
-
-

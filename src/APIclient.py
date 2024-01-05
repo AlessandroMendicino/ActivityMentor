@@ -1,6 +1,5 @@
 import openai
 import os
-from rich.console import Console
 from jproperties import Properties
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI

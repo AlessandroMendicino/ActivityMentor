@@ -1,12 +1,10 @@
 from storage import activitiesStorage
 import json
 from APIclient import simple_chat_prompt
-from rich.console import Console
 
-console = Console()
 DB = activitiesStorage()
 
-"""main class that control data flows"""
+"""main class that control data flows, use it for debug"""
 
 #gestore dei dati, inserisce, elimina e visualizza i dati del dbJson
 class dataController():
@@ -36,32 +34,37 @@ def json_to_string():
 if __name__ == "__main__":
 
     DC = dataController()
-
-#gestione input output da riga di comando
-    
-    #while True:
-        #response = input("insert record? type y o n: ")
-        #if response == "y":
-            #date = input("insert date: ")
-            #activity = input("insert activity: ")
-            #DC.insert_data(date, activity)
-        #else:
-            #break
     
     while True:
         response = input("view - clear - exit - Ai - insert: ")
         if response == "view":
-            DC.view()
+            elementi = DB.view_data()
+            print(type(elementi))
+            #for element in elementi:
+                #listaKey = element.keys()
+                #listaValues = element.values()
+                #print(list(listaKey)[0] + " " + list(listaValues)[0] + " // " 
+                       #+  list(listaKey)[1] + " " 
+                       #+ list(listaValues)[1])
+           
+            #molto meglio ->
+            for dato in elementi:
+                for attribute, value in dato.items():
+                    print(attribute + " " + value)
+                             
+  
+            
         elif response == "insert":
             DC.insert_data()
         elif response == "clear":
             DC.clear()
         elif response == "exit":
             break
-        elif response == "Ai:":
+        elif response == "Ai":
             iA_input = json_to_string()
             response = simple_chat_prompt(iA_input)
             print(response)
+            break
 
 
 

@@ -3,146 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STAGEACT</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/src/static/apple-touch-icon.png?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="/src/static/favicon-32x32.png?v=2">
-    <link rel="icon" type="image/png" sizes="16x16" href="/src/static/favicon-16x16.png?v=2">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- CSS style form -->
+    <title>Attività</title>
     <style>
         body {
-            background-color: #468bcb; /* Colore di sfondo globale */
-            color: rgb(0, 0, 0); /* Colore del testo globale */
+            background-color: #6d6d6d;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
-        .header-container {
-            background-color: #ffffff; /* Colore di sfondo viola */
-            border-radius: 15px; /* Bordo arrotondato */
-            padding: 20px; /* Spaziatura interna */
-            text-align: center; /* Testo centrato */
+        .card {
+            width: 600px;
+            background-image: linear-gradient(163deg, #d41717 0%, #3700ff 100%);
+            border-radius: 22px;
+            transition: all 0.3s;
+            margin: auto;
         }
 
-        .header-container h1 {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Stile del carattere */
-            font-size: 2.5em; /* Dimensione del carattere */
+        .card:hover {
+            box-shadow: 0px 0px 30px 1px rgba(255, 97, 97, 0.3);
         }
-    </style>
-    <style>
-        /* Altre regole di stile rimangono invariate */
 
-        /* Stile per i bottoni */
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-left: 2em;
+            padding-right: 2em;
+            padding-bottom: 0.4em;
+            background-color: #272727;
+            border-radius: 25px;
+            transition: 0.4s ease-in-out;
+        }
+
+        #heading {
+            text-align: center;
+            margin: 2em;
+            color: rgb(255, 255, 255);
+            font-size: 1.2em;
+            font-family: sans-serif;
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            border-radius: 25px;
+            padding: 0.6em;
+            border: none;
+            outline: none;
+            color: white;
+            background-color: #171717;
+            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+        }
+
+        .input-field {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: #d3d3d3;
+        }
+
         .btn {
-            background-color: #007bff; /* Colore di sfondo per i pulsanti (blu) */
-            color: #fff; /* Colore del testo per i pulsanti (bianco) */
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            margin-top: 2.5em;
         }
 
-        /* Stile per il pulsante di toggleMode */
-        #visualAttivita {
-            background-color: #468bcb; /* Colore di sfondo per il pulsante di toggleMode (viola) */
-            color: #000000; /* Colore del testo per il pulsante di toggleMode (bianco) */
+        .button1,
+        .button2 {
+            padding: 0.5em;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            transition: 0.4s ease-in-out;
+            color: white;
+        }
+
+        .button1:hover,
+        .button2:hover {
+            color: white;
+        }
+
+        .button1 {
+            background-color: #252525;
+            margin-right: 0.5em;
+        }
+
+        .button2 {
+            background-color: #252525;
+        }
+
+        .button3 {
+            margin-bottom: 3em;
+            padding: 0.5em;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            transition: 0.4s ease-in-out;
+            background-color: #252525;
+            color: white;
+        }
+
+        .button3:hover {
+            background-color: red;
+            color: white;
+        }
+
+        #search-form {
+            margin-top: 1.5em;
         }
     </style>
 </head>
 <body>
-
-    <div class="container mt-5 header-container">
-        <h1 class="mb-4">STAGEACT <span class="badge rounded-pill bg-primary">v1.0.0</span></h1>
-
-        <!-- Form per l'inserimento dei dati -->
-        <form method="post" action="/">
-            <div class="form-group">
-                <label for="data">Data:</label>
-                <input type="date" class="form-control" id="data" name="data" required>
+    <div class="card">
+        <div class="form" id="activity-form">
+            <p id="heading">Inserisci Attività</p>
+            <div class="field">
+                <input type="text" class="input-field" name="activity" placeholder="Attività" autocomplete="off" />
             </div>
-            <div class="form-group">
-                <label for="attivita">Attività:</label>
-                <input type="text" class="form-control" id="attivita" name="attivita" required>
+            <div class="field">
+                <input type="text" class="input-field" name="date" placeholder="Data (gg/mm/aaaa)" autocomplete="off" />
             </div>
-            <button type="submit" class="btn btn-primary">Invia</button>
+            <div class="btn">
+                <button type="submit" class="button1">Inserisci Attività</button>
+            </div>
+        </div>
+
+        <div id="activity-list">
+            <p id="heading">Ultima Attività</p>
+            <p id="last-activity">{{ last_activity }}</p>
+            <p id="last-date">{{ last_date }}</p>
+        </div>
+
+        <form class="form" id="search-form" method="get" action="{{ url_for('show_all_activities') }}">
+            <div class="btn">
+                <button type="submit" class="button2">Mostra Tutte le Attività</button>
+            </div>
         </form>
+    </div>
 
-        <!-- Visualizzazione dei dati inseriti -->
-        {% if data and attivita %}
-        <div class="mt-4">
-            <h2>ultimi dati inseriti:</h2>
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>DATA</th>
-                        <th>ATTIVITA'</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ data }}</td>
-                        <td>{{ attivita }}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <form class="form" id="search-form" method="get" action="{{ url_for('search_by_month') }}">
+        <div class="field">
+            <input type="text" class="input-field" name="month" placeholder="Mese (mm)" autocomplete="off" />
         </div>
-        {% endif %}
-
-        <!-- Bottone per Visualizzare Attività -->
-        <button type="button" class="btn btn-info mt-4"  id="visualAttivita">
-            Visualizza/Nascondi Registro attività
-        </button>
-
-        <!-- Tabella per visualizzare attività (inizialmente nascosta) -->
-        <div class="mt-4" id="attivitaTable" style="display: none;">
-            <h2>Attività:</h2>
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>DATA</th>
-                        <th>ATTIVITA'</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item1, item2 in listeElementi %}
-                    <tr>
-                        <th>{{ item2 }}</th>
-                        <th>{{ item1 }}</th>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="btn">
+            <button type="submit" class="button2">Ricerca per Mese</button>
         </div>
+    </form>
 
-        <!-- Pulsante per Avviare Analisi AI -->
-        <button type="button" class="btn btn-success mt-4" id="avviaAnalisiAI">
-            Analisi AI
-        </button>
-
-        <!-- visualizzazione risposta AI -->
-        <div class="card">
-            <div class="card-header">
-              Ai
-            </div>
-            <div class="card-body">
-              <blockquote class="blockquote mb-0">
-                <p>{{ result }}</p>
-                <footer class="blockquote-footer">powered by:  <cite title="Source Title">GPT-4</cite></footer>
-              </blockquote>
-            </div>
-          </div>
-
-
-    <!-- Bootstrap JS and dependencies (for proper functionality) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- JavaScript per Cambiare Light  -->
     <script>
-        // JavaScript to show/hide the table on button click
-        document.getElementById('visualAttivita').addEventListener('click', function () {
-            var attivitaTable = document.getElementById('attivitaTable');
-            attivitaTable.style.display = (attivitaTable.style.display === 'none' || attivitaTable.style.display === '') ? 'block' : 'none';
-        });
+        // Puoi mantenere il codice JavaScript per eventuali azioni client-side
     </script>
-
 </body>
 </html>

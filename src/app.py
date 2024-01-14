@@ -1,48 +1,40 @@
 from flask import Flask, render_template, request
-from storage import activitiesStorage
-from flask_socketio import SocketIO, emit
 from APIclient import simple_chat_prompt
 import json
+from __init__ import app, db
 
-app = Flask(__name__, template_folder=r"C:\Users\alessandro.mendicino\PYTHON_PROJECTS\STAGEACTS\src\templates")
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
-DB = activitiesStorage()
-
-@app.route("/", methods=["GET", "POST"])
+@app.route('/')
 def index():
-    data = None
-    attivita = None
+    return render_template('index.html', last_activity="Ultima Attività:", last_date="Ultima Data:")
 
-    if request.method == "POST":
-        data = request.form["data"]
-        attivita = request.form["attivita"]
-        DB.add_data(data, attivita)
+@app.route('/add_activity', methods=['POST'])
+def add_activity():
+    activity = request.form.get('activity')
+    date = request.form.get('date')
 
-    activities = DB.view_data()
-    listaDate = []
-    listaAttivita = []
-    for item in activities:
-        listaDate.append(item["DATA"])
-        listaAttivita.append(item["ATTIVITA'"])
-    
-    print(listaDate)
-    print(listaAttivita)
-    return render_template("index.html", listeElementi=zip(listaAttivita, listaDate), listaDate=listaDate, data=data, attivita=attivita)
+    # Esegui la logica per aggiungere l'attività al tuo database
+    # Aggiorna last_activity e last_date in base ai dati effettivi nel tuo database
 
-#TODO implements this function in frontend
-@app.route('/start_analysis')
-def start_analysis():
-    
-    def json_to_string():
-        with open('storage.json' , 'r') as file:
-            contenuto_json = json.load(file)
-            stringa_json = json.dumps(contenuto_json, indent=2) 
-        return stringa_json
+    return render_template('index.html', last_activity=f"Ultima Attività: {activity}", last_date=f"Ultima Data: {date}")
 
-    # Esegui l'analisi AI qui e restituisci il risultato
-    result = simple_chat_prompt(json_to_string())
-    return render_template("index.html", result=result)
+@app.route('/show_all_activities')
+def show_all_activities():
+    # Esegui la logica per ottenere tutte le attività dal tuo database
+    # Passa i dati a Jinja e aggiorna la pagina
+
+    return render_template('index.html', last_activity="Ultima Attività:", last_date="Ultima Data:")
+
+@app.route('/search_by_month')
+def search_by_month():
+    month = request.args.get('month')
+
+    # Esegui la logica per ottenere le attività per il mese specificato dal tuo database
+    # Passa i dati a Jinja e aggiorna la pagina
+
+    # Ad esempio, restituisci tutte le attività del mese specificato per ora
+    activities_for_month = []  # Implementa la tua logica qui
+
+    return render_template('index.html', last_activity="Ultima Attività:", last_date="Ultima Data:", activities=activities_for_month)
 
 if __name__ == "__main__":
     app.run(debug=True)

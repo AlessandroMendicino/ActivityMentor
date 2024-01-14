@@ -8,19 +8,29 @@ from langchain.prompts import PromptTemplate
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema import HumanMessage, BaseOutputParser
 from langchain.memory import ConversationBufferMemory
- 
+import json
+
 os.environ["OPENAI_API_KEY"] = "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"
 
 
-def simple_chat_prompt(text):
+def simple_chat_prompt():
     
-    class CommaSeparatedListOutputParser(BaseOutputParser):
-        """Parse the output of an LLM call to a comma-separated list."""
-        def parse(self, text: str):
-            """Parse the output of an LLM call."""
-            return text.strip().split(", ")
+    
+    def json_to_string():
+        with open('storage.json' , 'r') as file:
+            contenuto_json = json.load(file)
+            stringa_json = json.dumps(contenuto_json, indent=2) 
+        return stringa_json
+    
+    text = json_to_string()
+    
+    #class CommaSeparatedListOutputParser(BaseOutputParser):
+        #"""Parse the output of an LLM call to a comma-separated list."""
+        #def parse(self, text: str):
+            #"""Parse the output of an LLM call."""
+            #return text.strip().split(", ")
     human_template = "{text}"
-   
+
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", """sei un assistente virtuale che analizza e descrive le attività svolte nei mesi di studio e lavoro di un utente stagista 
                     e poi fornisce suggerimenti per continuare l'attività di stage. 
@@ -33,5 +43,5 @@ def simple_chat_prompt(text):
                     Sottolinando anche quali nuovi argomenti possono essere più utili da studiare e quali no, e come perfezionare le skill personali e con quali esercitazioni."""),
         ("human", human_template),
     ])
-    chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") | CommaSeparatedListOutputParser()
+    chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") #| CommaSeparatedListOutputParser()
     return (chain.invoke({"text":text}))

@@ -4,161 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attività</title>
-    <style>
-        body {
-            background-color: #6d6d6d;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .card {
-            width: 600px;
-            background-image: linear-gradient(163deg, #d41717 0%, #3700ff 100%);
-            border-radius: 22px;
-            transition: all 0.3s;
-            margin: auto;
-        }
-
-        .card:hover {
-            box-shadow: 0px 0px 30px 1px rgba(255, 97, 97, 0.3);
-        }
-
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-left: 2em;
-            padding-right: 2em;
-            padding-bottom: 0.4em;
-            background-color: #272727;
-            border-radius: 25px;
-            transition: 0.4s ease-in-out;
-        }
-
-        #heading {
-            text-align: center;
-            margin: 2em;
-            color: rgb(255, 255, 255);
-            font-size: 1.2em;
-            font-family: sans-serif;
-        }
-
-        .field {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5em;
-            border-radius: 25px;
-            padding: 0.6em;
-            border: none;
-            outline: none;
-            color: white;
-            background-color: #171717;
-            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
-        }
-
-        .input-field {
-            background: none;
-            border: none;
-            outline: none;
-            width: 100%;
-            color: #d3d3d3;
-        }
-
-        .btn {
-            display: flex;
-            justify-content: center;
-            flex-direction: row;
-            margin-top: 2.5em;
-        }
-
-        .button1,
-        .button2 {
-            padding: 0.5em;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            transition: 0.4s ease-in-out;
-            color: white;
-        }
-
-        .button1:hover,
-        .button2:hover {
-            color: white;
-        }
-
-        .button1 {
-            background-color: #252525;
-            margin-right: 0.5em;
-        }
-
-        .button2 {
-            background-color: #252525;
-        }
-
-        .button3 {
-            margin-bottom: 3em;
-            padding: 0.5em;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            transition: 0.4s ease-in-out;
-            background-color: #252525;
-            color: white;
-        }
-
-        .button3:hover {
-            background-color: red;
-            color: white;
-        }
-
-        #search-form {
-            margin-top: 1.5em;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-    <div class="card">
-        <div class="form" id="activity-form">
-            <p id="heading">Inserisci Attività</p>
-            <div class="field">
-                <input type="text" class="input-field" name="activity" placeholder="Attività" autocomplete="off" />
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">{{ username }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div class="field">
-                <input type="text" class="input-field" name="date" placeholder="Data (gg/mm/aaaa)" autocomplete="off" />
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Inserisci Attività</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label for="activityInput" class="form-label">Attività</label>
+                                <input type="text" class="form-control" id="activityInput" placeholder="Inserisci attività">
+                            </div>
+                            <div class="mb-3">
+                                <label for="dateInput" class="form-label">Data</label>
+                                <input type="text" class="form-control" id="dateInput" placeholder="Seleziona una data">
+                            </div>
+                            <div class="mb-3">
+                                <label for="selectChoice" class="form-label">Scelta</label>
+                                <select class="form-select" id="selectChoice">
+                                    <option value="scelta1">Scelta 1</option>
+                                    <option value="scelta2">Scelta 2</option>
+                                    <!-- Aggiungi altre opzioni secondo necessità -->
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="inserisciAttivita()">Inserisci Attività</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="btn">
-                <button type="submit" class="button1">Inserisci Attività</button>
+
+            <div class="col-md-6 mt-3 mt-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ultime Attività Inserite</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{ activity }}</th>
+                                    <th scope="col">{{ date }}</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ultimeAttivitaTableBody">
+                                <!-- Qui vengono inserite dinamicamente le ultime attività -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="activity-list">
-            <p id="heading">Ultima Attività</p>
-            <p id="last-activity">{{ last_activity }}</p>
-            <p id="last-date">{{ last_date }}</p>
+        <div class="row mt-3">
+            <div class="col">
+                <button type="button" class="btn btn-secondary" onclick="visualizzaTutteAttivita()">Visualizza Tutte le Attività</button>
+            </div>
         </div>
 
-        <form class="form" id="search-form" method="get" action="{{ url_for('show_all_activities') }}">
-            <div class="btn">
-                <button type="submit" class="button2">Mostra Tutte le Attività</button>
+        <div class="row mt-3">
+            <div class="col">
+                <!-- Bottone "Visualizza Tabella Utenti" visibile solo per gli utenti amministratori -->
+                <button type="button" class="btn btn-info" onclick="visualizzaTabellaUtenti()">Visualizza Tabella Utenti</button>
             </div>
-        </form>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <!-- Testo d'analisi inizialmente vuoto -->
+                <p id="testoAnalisi"></p>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <h5 class="card-title">Tutte le Attività</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Attività</th>
+                            <th scope="col">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tutteAttivitaTableBody">
+                        <!-- Qui vengono inserite dinamicamente tutte le attività -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <form class="form" id="search-form" method="get" action="{{ url_for('search_by_month') }}">
-        <div class="field">
-            <input type="text" class="input-field" name="month" placeholder="Mese (mm)" autocomplete="off" />
-        </div>
-        <div class="btn">
-            <button type="submit" class="button2">Ricerca per Mese</button>
-        </div>
-    </form>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
-        // Puoi mantenere il codice JavaScript per eventuali azioni client-side
+        // Inizializza il campo della data con flatpickr
+        flatpickr("#dateInput", { dateFormat: "Y-m-d" });
+
+        // Funzione per simulare l'inserimento di un'attività e aggiornare la tabella delle ultime attività
+        function inserisciAttivita() {
+            var activity = document.getElementById("activityInput").value;
+            var date = document.getElementById("dateInput").value;
+
+            // Simulare l'inserimento in un array di attività
+            var ultimeAttivita = [{ activity: activity, date: date }];
+
+            // Aggiorna la tabella delle ultime attività
+            aggiornaTabella("ultimeAttivitaTableBody", ultimeAttivita);
+        }
+
+        // Funzione per simulare il recupero e la visualizzazione di tutte le attività
+        function visualizzaTutteAttivita() {
+            // Simulare il recupero di tutte le attività
+            var tutteAttivita = [
+                { activity: "Attività 1", date: "2022-01-01" },
+                { activity: "Attività 2", date: "2022-01-02" },
+                // Aggiungi altre attività secondo necessità
+            ];
+
+            // Aggiorna la tabella di tutte le attività
+            aggiornaTabella("tutteAttivitaTableBody", tutteAttivita);
+        }
+
+        // Funzione per visualizzare la tabella degli utenti (solo per gli amministratori)
+        function visualizzaTabellaUtenti() {
+            // Simulare il recupero degli utenti (dovresti implementare questa logica nel backend)
+            var utenti = [
+                { username: "Utente1", ruolo: "Amministratore" },
+                { username: "Utente2", ruolo: "Utente Standard" },
+                // Aggiungi altri utenti secondo necessità
+            ];
+
+            // Aggiorna la tabella degli utenti
+            aggiornaTabellaUtenti("utentiTableBody", utenti);
+        }
+
+        // Funzione per aggiornare una tabella con dati dinamici
+        function aggiornaTabella(tableId, data) {
+            var tableBody = document.getElementById(tableId);
+            tableBody.innerHTML = "";
+
+            for (var i = 0; i < data.length; i++) {
+                var row = document.createElement("tr");
+                var cellActivity = document.createElement("td");
+                cellActivity.textContent = data[i].activity;
+                var cellDate = document.createElement("td");
+                cellDate.textContent = data[i].date;
+
+                row.appendChild(cellActivity);
+                row.appendChild(cellDate);
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Funzione per avviare l'analisi in base alla scelta dell'utente
+        function avviaAnalisi() {
+            var selectChoice = document.getElementById("selectChoice");
+            var choice = selectChoice.value;
+
+            // Esempio: Testo d'analisi in base alla scelta
+            var testoAnalisi = "Analisi per la scelta: " + choice;
+
+            // Visualizza il testo d'analisi
+            document.getElementById("testoAnalisi").innerText = testoAnalisi;
+        }
     </script>
 </body>
 </html>

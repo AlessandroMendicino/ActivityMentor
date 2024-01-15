@@ -2,8 +2,11 @@ from __init__ import db, app
 from DBmanager import User, Activity
 from datetime import date
 
+
+"""use this module to initialize db"""
+
 class sampleDBmanager():
-    #sample functions for filter, insert, delete data
+    
     
     def __init__(self):
         pass
@@ -13,13 +16,13 @@ class sampleDBmanager():
             db.create_all()
     
     
-    def add_data(self):
+    def add_data(self): #use this function to insert sample data 
         with app.app_context():
             me = User(username='alessandro', email="alessandro@sample.com", is_admin=True)
             me.set_password("ciao")
             you = User(username="MarioRossi", email="mariorossi@sample.com", is_admin=True)
             you.set_password("minchia")
-            studio1 = Activity(date=date(2024, 1, 1), description="studio software", user=me)
+            studio1 = Activity(date=date(2024, 1, 1), description="studio software", user=you)
             studio2 = Activity(date=date(2024, 2, 2), description="studio libri", user=you)
             db.session.add(me)
             db.session.commit()
@@ -37,7 +40,7 @@ class sampleDBmanager():
             db.session.query(Activity).delete()
             db.session.commit()
       
-    def view_data(self):
+    def view_data(self): #query sample
         with app.app_context():
             attività = Activity.query.filter(db.extract('month', Activity.date) == 2).all()
         for act in attività:
@@ -49,7 +52,7 @@ class sampleDBmanager():
 
 DB = sampleDBmanager()
 
-#DB.createTables()
+DB.createTables()
 #DB.add_data()
 #DB.clear_data()
 #DB.view_data()

@@ -3,109 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STAGEACT</title>
+    <title>STAGEACT Home</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- CSS per Light e Dark Mode -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        body.dark-mode {
-            background-color: #343a40;
-            color: white;
+        body {
+            background-color: #dddddd; /* Colore di sfondo */
+            color: #000000; /* Colore del testo principale */
         }
 
-        #toggleMode {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            border-radius: 50%;
-            padding: 10px;
+        .navbar {
+            /*background-color: #ff0000; /* Colore della navbar */
+            background-image: linear-gradient(163deg, #ff0000 0%, rgb(100, 87, 87) 100%);
+            box-shadow: 0px 0px 40px 2px rgb(0, 0, 0);
+
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important; /* Colore del testo nella navbar */
+        }
+
+        .navbar-toggler-icon {
+            background-color: rgb(100, 87, 87); /* Colore dell'icona del toggler */
+        }
+
+        .card {
+            background-color: #ffffff; /* Colore di sfondo delle card */
+            border: 1px solid #dee2e6; /* Colore del bordo delle card */
+            border-radius: 15px; /* Bordo arrotondato delle card */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); /* Ombra delle card */
+        }
+
+        .form-label {
+            color: #343a40; /* Colore delle etichette del form */
+        }
+
+        .btn-primary {
+            background-color: #6c757d; /* Colore di sfondo del bottone primario */
+            /*border-color: #6b6b6b; /* Colore del bordo del bottone primario */
+        }
+
+        .btn-primary:hover {
+            background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
+            /*border-color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Colore di sfondo del bottone secondario */
+            /*border-color: #6c757d; /* Colore del bordo del bottone secondario */
+        }
+
+        .btn-secondary:hover {
+            background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
+            /*border-color: #5a6268;*/
+        }
+
+        .btn-info {
+            background-color: #6c757d; /* Colore di sfondo del bottone info */
+            color:#ffffff
+            /*border-color: #17a2b8; /* Colore del bordo del bottone info */
+        }
+
+        .btn-info:hover {
+            background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
+            /*border-color: #117a8b;*/
         }
     </style>
 </head>
 <body>
-
-<div class="container mt-5">
-    <h1 class="mb-4">STAGEACT</h1>
-
-    <!-- Form per l'inserimento dei dati -->
-    <form method="post" action="/">
-        <div class="form-group">
-            <label for="data">Data:</label>
-            <input type="date" class="form-control" id="data" name="data" required>
-        </div>
-        <div class="form-group">
-            <label for="attivita">Attività:</label>
-            <input type="text" class="form-control" id="attivita" name="attivita" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Invia</button>
-    </form>
-
-    <!-- Visualizzazione dei dati inseriti -->
-    {% if data and attivita %}
-    <div class="mt-4">
-        <h2>Dati Inseriti:</h2>
-        <p><strong>Data:</strong> {{ data }}</p>
-        <p><strong>Attività:</strong> {{ attivita }}</p>
-    </div>
-    {% endif %}
-
-    <!-- Bottone per Visualizzare Attività -->
-    <button type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#attivitaModal">
-        Visualizza Attività
-    </button>
-
-    <!-- Modal per Visualizzare Attività -->
-    <div class="modal fade" id="attivitaModal" tabindex="-1" role="dialog" aria-labelledby="attivitaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="attivitaModalLabel">Attività Inserite</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {% if activities_list %}
-                    <div class="modal-body">
-                        <div class="mt-4">
-                            <h2>Tutti i Dati:</h2>
-                            <ul>
-                                {% for item in activities_list %}
-                                <li>
-                                    <strong>Data:</strong> {{ item['DATA'] }},
-                                    <strong>Attività:</strong> {{ item["ATTIVITA'"] }}
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                {% endif %}
-
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">STAGEACT     </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenuHeroA" aria-controls="navbarMenuHeroA" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarMenuHeroA">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="{{ url_for('profile') }}" class="nav-link">
+                            {{ current_user.username }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-link">
+                                logout
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
+    
 
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Inserisci attività</h5>
+                        <form method="post" action="{{ url_for('activityHome')}}">
+                            <div class="mb-3">
+                                <label for="activityInput" class="form-label">Attività</label>
+                                <input type="text" class="form-control" id="activityInput" name="activityInput" placeholder="Inserisci attività">
+                            </div>
+                            <div class="mb-3">
+                                <label for="dateInput" class="form-label">Data</label>
+                                <input type="text" class="form-control" id="dateInput" name="dateInput" placeholder="Seleziona una data">
+                            </div>
+                            <div class="mb-3">
+                                <label for="selectChoice" class="form-label">Ricerca per mese</label>
+                                <select class="form-select" id="selectChoice">
+                                    <option value="scelta1">Gennaio</option>
+                                    <option value="scelta2">Febbraio</option>
+                                    <option value="scelta2">Marzo</option>
+                                    <option value="scelta2">Aprile</option>
+                                    <option value="scelta2">Maggio</option>
+                                    <!-- Aggiungi altre opzioni secondo necessità -->
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Inserisci attività</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-md-6 mt-3 mt-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ultime attività inserite</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{ username}}</th>
+                                    <th scope="col">data: </th>
+                                    <th scope="col">attività: </th>
+                                </tr>
+                            </thead>
+                            <tbody id="ultimeAttivitaTableBody">
+                                <tr>
+                                    <td> - </td>
+                                    <td>{{ date_activity }}</td>
+                                    <td>{{ activity }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Pulsante per Cambiare Light e Dark Mode -->
-    <button type="button" class="btn btn-secondary" id="toggleMode">
-        <span id="modeIcon" class="d-inline-block" style="font-size: 1.5em;">☀️</span>
-    </button>
+        <form method="POST" action="{{url_for('viewActivity')}}">
+            <div class="col-md-6 mt-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mt-3">
+                            <div class="col">
+                                <a type="submit" class="btn btn-secondary" href="{{url_for('viewActivity')}}">Visualizza tutte le attività</a>
+                            </div>
+                        </div>
 
-</div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <h5 class="card-title">Tutte le attività</h5>
+                                {% if activities %}
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">data</th>
+                                                <th scope="col">attività</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for act in activities %}
+                                                <tr>
+                                                    <td>{{ act.date }}</td>
+                                                    <td>{{ act.description }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </form>
+    </div>  
 
-<!-- Bootstrap JS and dependencies (for proper functionality) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<!-- JavaScript per Cambiare Light e Dark Mode -->
-<script>
-    document.getElementById('toggleMode').addEventListener('click', function () {
-        document.body.classList.toggle('dark-mode');
-        var modeIcon = document.getElementById('modeIcon');
-        modeIcon.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
-    });
-</script>
-
+    <script>
+        // Inizializza il campo della data con flatpickr
+        flatpickr("#dateInput", { dateFormat: "Y-m-d" });
+    </script>
 </body>
 </html>

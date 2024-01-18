@@ -1,0 +1,123 @@
+body {
+    background-color: #111111;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.card {
+    width: 600px;
+    background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+    border-radius: 20px;
+    transition: all .3s;
+}
+
+.card2 {
+    width: 190px;
+    height: 254px;
+    background-color: #1a1a1a;
+    border-radius: 20px;
+    transition: all .2s;
+}
+
+.card2:hover {
+    transform: scale(0.98);
+}
+
+.card:hover {
+    box-shadow: 0px 0px 30px 1px rgba(0, 255, 177, 0.30);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 0.4em;
+    background-color: #1d1d1d;
+    border-radius: 25px;
+    transition: 0.4s ease-in-out;
+}
+
+#heading {
+    text-align: center;
+    margin: 2em;
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+    font-family: sans-serif;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border-radius: 25px;
+    padding: 0.6em;
+    border: none;
+    outline: none;
+    color: rgb(252, 252, 252);
+    background-color: #171717;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.input-field {
+    background: none;
+    display: flex;
+    align-items: end;
+    border: none;
+    outline: none;
+    width: 80%; /* Aumentato lo spazio per l'icona */
+    color: #fefafa;
+}
+
+
+.btn {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 2em;
+}
+
+.button1,
+.button2,
+.button3 {
+    padding: 1em; /* Aumentato il padding */
+    border-radius: 8px; /* Aumentato il bordo arrotondato */
+    border: none;
+    outline: none;
+    transition: 0.4s ease-in-out;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    background-color: #111111;
+}
+
+.button1:hover,
+.button2:hover,
+.button3:hover {
+    background-color: rgb(255, 2, 2);
+    color: rgb(251, 248, 248);
+    transform: scale(1.05);
+}
+
+.button1 {
+    margin-right: 0.5em;
+}
+
+.button3 {
+    margin-bottom: 3em;
+}
+
+.button3:hover {
+    background-color: red;
+}
+
+#search-form {
+    margin-top: 1.5em;
+}
+
+
+

@@ -53,6 +53,8 @@ def signup():
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
+    #TODO: add check password confirmed
+    #TODO: add tutor/stage status
     # code to validate and add user to database goes here
     username = request.form.get('username')
     email = request.form.get('email')

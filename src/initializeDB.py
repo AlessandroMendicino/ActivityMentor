@@ -1,9 +1,12 @@
-from __init__ import db, app
+from __init__ import db, create_app
 from DBmanager import User, Activity
 from datetime import date
+from APIclient import copilot_chat_prompt
 
 
 """use this module to initialize db"""
+
+app = create_app()
 
 class sampleDBmanager():
     
@@ -52,7 +55,19 @@ class sampleDBmanager():
 
 DB = sampleDBmanager()
 
-DB.createTables()
+#DB.createTables()
 #DB.add_data()
 #DB.clear_data()
 #DB.view_data()
+
+with app.app_context():
+    activities = Activity.query.filter_by(user_id=1).all()
+result_string = '\n'.join([f'{result.date}: {result.description}' for result in activities])
+
+while (True):
+    input_utente = input("inserisci le analisi che vuoi fare sul db: ")
+    if input_utente == "exit":
+        break
+    else:
+        response = copilot_chat_prompt(input_utente, result_string)
+        print(response)

@@ -1,261 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STAGEACT Home</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <style>
-        body {
-            background-color: #dddddd; /* Colore di sfondo */
-            color: #000000; /* Colore del testo principale */
-        }
-
-        .navbar {
-            /*background-color: #ff0000; /* Colore della navbar */
-            background-image: linear-gradient(163deg, #ff0000 0%, rgb(100, 87, 87) 100%);
-            box-shadow: 0px 0px 40px 2px rgb(0, 0, 0);
-
-        }
-
-        .navbar-brand, .nav-link {
-            color: #ffffff !important; /* Colore del testo nella navbar */
-        }
-
-        .navbar-toggler-icon {
-            background-color: rgb(100, 87, 87); /* Colore dell'icona del toggler */
-        }
-
-        .card {
-            background-color: #ffffff; /* Colore di sfondo delle card */
-            border: 1px solid #dee2e6; /* Colore del bordo delle card */
-            border-radius: 15px; /* Bordo arrotondato delle card */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); /* Ombra delle card */
-        }
-
-        .form-label {
-            color: #343a40; /* Colore delle etichette del form */
-        }
-
-        .btn-primary {
-            background-color: #6c757d; /* Colore di sfondo del bottone primario */
-            /*border-color: #6b6b6b; /* Colore del bordo del bottone primario */
-        }
-
-        .btn-primary:hover {
-            background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
-            /*border-color: #ffffff;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d; /* Colore di sfondo del bottone secondario */
-            /*border-color: #6c757d; /* Colore del bordo del bottone secondario */
-        }
-
-        .btn-secondary:hover {
-            background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
-            /*border-color: #5a6268;*/
-        }
-
-        .btn-info {
-            background-color: #6c757d; /* Colore di sfondo del bottone info */
-            color:#ffffff
-            /*border-color: #17a2b8; /* Colore del bordo del bottone info */
-        }
-
-        .btn-info:hover {
-            background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
-            /*border-color: #117a8b;*/
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">{{ username }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login">
-                            <i class="bi bi-box-arrow-right"></i> logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Inserisci attivitàttività</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label for="activityInput" class="form-label">Attività</label>
-                                <input type="text" class="form-control" id="activityInput" placeholder="Inserisci attività">
-                            </div>
-                            <div class="mb-3">
-                                <label for="dateInput" class="form-label">Data</label>
-                                <input type="text" class="form-control" id="dateInput" placeholder="Seleziona una data">
-                            </div>
-                            <div class="mb-3">
-                                <label for="selectChoice" class="form-label">Ricerca per mese</label>
-                                <select class="form-select" id="selectChoice">
-                                    <option value="scelta1">Gennaio</option>
-                                    <option value="scelta2">Febbraio</option>
-                                    <option value="scelta2">Marzo</option>
-                                    <option value="scelta2">Aprile</option>
-                                    <option value="scelta2">Maggio</option>
-                                    <!-- Aggiungi altre opzioni secondo necessità -->
-                                </select>
-                            </div>
-                            <button type="button" class="btn btn-primary" onclick="inserisciAttivita()">Inserisci attività</button>
-                        </form>
+<form method="POST" action="{{url_for('viewActivity')}}">
+    <div class="col-md-6 mt-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mt-3">
+                    <div class="col">
+                        <a type="submit" class="btn btn-secondary" href="{{url_for('viewActivity')}}" onclick="showTable()">Visualizza tutte le attività</a>
+                        <a type="submit" class="btn btn-secondary" href="{{url_for('activityHome')}}" onclick="hideTable()">Nascondi attività</a>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 mt-3 mt-md-0">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Ultime attività inserite</h5>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">{{ activity }}</th>
-                                    <th scope="col">{{ date }}</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ultimeAttivitaTableBody">
-                                <!-- Qui vengono inserite dinamicamente le ultime attività -->
-                            </tbody>
-                        </table>
+                <div class="row mt-3">
+                    <div class="col">
+                        {% if activities %}
+                            <table class="table table-hover table-bordered" id="allActivitiesTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">data</th>
+                                        <th scope="col">attività</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for act in activities %}
+                                        <tr>
+                                            <td>{{ act.date }}</td>
+                                            <td>{{ act.description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+    </div>    
+</form>
 
-        <div class="row mt-3">
-            <div class="col">
-                <button type="button" class="btn btn-secondary" onclick="visualizzaTutteAttivita()">Visualizza tutte le attività</button>
-            </div>
-        </div>
 
-        <div class="row mt-3">
-            <div class="col">
-                <!-- Bottone "Visualizza Tabella Utenti" visibile solo per gli utenti amministratori -->
-                <button type="button" class="btn btn-info" onclick="visualizzaTabellaUtenti()">Visualizza tabella utenti</button>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col">
-                <!-- Testo d'analisi inizialmente vuoto -->
-                <p id="testoAnalisi"></p>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col">
-                <h5 class="card-title">Tutte le attività</h5>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Attività</th>
-                            <th scope="col">Data</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tutteAttivitaTableBody">
-                        <!-- Qui vengono inserite dinamicamente tutte le attività -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-    <script>
-        // Inizializza il campo della data con flatpickr
-        flatpickr("#dateInput", { dateFormat: "Y-m-d" });
-
-        // Funzione per simulare l'inserimento di un'attività e aggiornare la tabella delle ultime attività
-        function inserisciAttivita() {
-            var activity = document.getElementById("activityInput").value;
-            var date = document.getElementById("dateInput").value;
-
-            // Simulare l'inserimento in un array di attività
-            var ultimeAttivita = [{ activity: activity, date: date }];
-
-            // Aggiorna la tabella delle ultime attività
-            aggiornaTabella("ultimeAttivitaTableBody", ultimeAttivita);
-        }
-
-        // Funzione per simulare il recupero e la visualizzazione di tutte le attività
-        function visualizzaTutteAttivita() {
-            // Simulare il recupero di tutte le attività
-            var tutteAttivita = [
-                { activity: "Attività 1", date: "2022-01-01" },
-                { activity: "Attività 2", date: "2022-01-02" },
-                // Aggiungi altre attività secondo necessità
-            ];
-
-            // Aggiorna la tabella di tutte le attività
-            aggiornaTabella("tutteAttivitaTableBody", tutteAttivita);
-        }
-
-        // Funzione per visualizzare la tabella degli utenti (solo per gli amministratori)
-        function visualizzaTabellaUtenti() {
-            // Simulare il recupero degli utenti (dovresti implementare questa logica nel backend)
-            var utenti = [
-                { username: "Utente1", ruolo: "Amministratore" },
-                { username: "Utente2", ruolo: "Utente Standard" },
-                // Aggiungi altri utenti secondo necessità
-            ];
-
-            // Aggiorna la tabella degli utenti
-            aggiornaTabellaUtenti("utentiTableBody", utenti);
-        }
-
-        // Funzione per aggiornare una tabella con dati dinamici
-        function aggiornaTabella(tableId, data) {
-            var tableBody = document.getElementById(tableId);
-            tableBody.innerHTML = "";
-
-            for (var i = 0; i < data.length; i++) {
-                var row = document.createElement("tr");
-                var cellActivity = document.createElement("td");
-                cellActivity.textContent = data[i].activity;
-                var cellDate = document.createElement("td");
-                cellDate.textContent = data[i].date;
-
-                row.appendChild(cellActivity);
-                row.appendChild(cellDate);
-                tableBody.appendChild(row);
-            }
-        }
-
-        // Funzione per avviare l'analisi in base alla scelta dell'utente
-        function avviaAnalisi() {
-            var selectChoice = document.getElementById("selectChoice");
-            var choice = selectChoice.value;
-
-            // Esempio: Testo d'analisi in base alla scelta
-            var testoAnalisi = "Analisi per la scelta: " + choice;
-
-            // Visualizza il testo d'analisi
-            document.getElementById("testoAnalisi").innerText = testoAnalisi;
-        }
-    </script>
-</body>
-</html>
+<textarea class="form-control" id="input_utente_chat" name="input_utente_chat" rows="3" placeholder="here..."></textarea>

@@ -70,4 +70,5 @@ while (True):
         break
     else:
         response = copilot_chat_prompt(input_utente, result_string)
+        #stringa_con_andare_a_capo = response.replace('\n', '')
         print(response)

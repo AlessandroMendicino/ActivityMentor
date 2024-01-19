@@ -112,18 +112,31 @@
                                 <label for="dateInput" class="form-label">Data</label>
                                 <input type="text" class="form-control" id="dateInput" name="dateInput" placeholder="Seleziona una data">
                             </div>
-                            <div class="mb-3">
-                                <label for="selectChoice" class="form-label">Ricerca per mese</label>
-                                <select class="form-select" id="selectChoice">
-                                    <option value="scelta1">Gennaio</option>
-                                    <option value="scelta2">Febbraio</option>
-                                    <option value="scelta2">Marzo</option>
-                                    <option value="scelta2">Aprile</option>
-                                    <option value="scelta2">Maggio</option>
-                                    <!-- Aggiungi altre opzioni secondo necessità -->
-                                </select>
-                            </div>
                             <button type="submit" class="btn btn-primary">Inserisci attività</button>
+                            <a type="submit" class="btn btn-secondary" href="{{url_for('viewActivity')}}" onclick="showTable()">Visualizza tutte le attività</a>
+                            <a type="submit" class="btn btn-secondary" href="{{url_for('activityHome')}}" onclick="hideTable()">Nascondi attività</a>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {% if activities %}
+                                        <table class="table table-hover table-bordered" id="allActivitiesTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">data</th>
+                                                    <th scope="col">attività</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for act in activities %}
+                                                    <tr>
+                                                        <td>{{ act.date }}</td>
+                                                        <td>{{ act.description }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -151,47 +164,29 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <form method="POST" action="{{url_for('viewActivity')}}">
-            <div class="col-md-6 mt-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row mt-3">
-                            <div class="col">
-                                <a type="submit" class="btn btn-secondary" href="{{url_for('viewActivity')}}">Visualizza tutte le attività</a>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col">
-                                <h5 class="card-title">Tutte le attività</h5>
-                                {% if activities %}
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">data</th>
-                                                <th scope="col">attività</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for act in activities %}
-                                                <tr>
-                                                    <td>{{ act.date }}</td>
-                                                    <td>{{ act.description }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                {% endif %}
+                <form method="post" action="{{ url_for('AiCopilot')}}">
+                    <div class="row mt-3">
+                        <div class="col-md-12 mt-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">ActivityMentor copilot - powered by GPT-4</h5>
+                                        <div class="mb-3">
+                                            <label for="chatMessage" class="form-label">ask me anythings about your activities</label>
+                                            <input type="text" class="form-control" id="input_utente_chat" name="input_utente_chat" placeholder="here...">
+                                        </div>
+                                        <a type="submit" class="btn btn-primary" href="{{url_for('AiCopilot')}}">Invia</a>
+                                        <br>
+                                        <br>
+                                        <textarea class="form-control" id="chat_response" name="chat_response" rows="5">{{ response }}</textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>    
-        </form>
-    </div>  
+                </form>
+            </div>
+        </div> 
+    </div>
+
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -201,6 +196,18 @@
     <script>
         // Inizializza il campo della data con flatpickr
         flatpickr("#dateInput", { dateFormat: "Y-m-d" });
+
+          // Funzione per mostrare la tabella delle attività
+        function showTable() {
+            var table = document.getElementById("allActivitiesTable");
+            table.style.display = "table";
+        }
+
+        // Funzione per nascondere la tabella delle attività
+        function hideTable() {
+            var table = document.getElementById("allActivitiesTable");
+            table.style.display = "none";
+        }
     </script>
 </body>
 </html>

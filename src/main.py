@@ -2,7 +2,7 @@ from flask import (Flask, render_template,
                 request, flash,
                 url_for, redirect,
                 session, Blueprint)
-from APIclient import simple_chat_prompt
+from APIclient import copilot_chat_prompt
 import json
 from __init__ import db, create_app
 #from __initi__ import app, db
@@ -56,9 +56,9 @@ def signup_post():
     #TODO: add check password confirmed
     #TODO: add tutor/stage status
     # code to validate and add user to database goes here
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
 
     user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
 
@@ -128,42 +128,34 @@ def activityHome():
 def viewActivity():
     user = User.query.filter_by(id=current_user.id).first()
     activities = Activity.query.filter_by(user_id=current_user.id).all()
-    for act in activities:
-        print(act.description, act.date)
+    #for act in activities:
+        #print(act.description, act.date)
     return render_template('index.html', activities=activities)
 
 
 
 
+#AiCopilot
+
+@app.route('/AiCopilot', methods=["GET", "POST"])
+@login_required
+def AiCopilot():
+    response = None
+    
+    if request.method == "POST":
+        activities = Activity.query.filter_by(user_id=1).all()
+        result_string = '\n'.join([f'{result.date}: {result.description}' for result in activities])
+        input_utente = request.form["input_utente_chat"]
+        response = copilot_chat_prompt(input_utente, result_string)
+        print(input_utente)
+        print(response)
+            #return render_template('index.html', response=response)
+            
+    return render_template("index.html", response=response)
+    
+    
 
 
-'''   
-@app.route('/show_all_activities')
-    def show_all_activities():
-    pass
-     Esegui la logica per ottenere tutte le attività dal tuo database
-    Passa i dati a Jinja e aggiorna la pagina
-
-    #return render_template('index.html', last_activity="Ultima Attività:", last_date="Ultima Data:")
-'''
-
-#@app.route('/show_all_user')
-#def show_all_user():
-    #pass
-
-'''
-@app.route('/search_by_month')
-def search_by_month():
-    month = request.args.get('month')
-
-     Esegui la logica per ottenere le attività per il mese specificato dal tuo database
-     Passa i dati a Jinja e aggiorna la pagina
-
-     #d esempio, restituisci tutte le attività del mese specificato per ora
-    activities_for_month = []  # Implementa la tua logica qui
-
-    return render_template('index.html', last_activity="Ultima Attività:", last_date="Ultima Data:", activities=activities_for_month)
-'''
 
 
 if __name__ == "__main__":

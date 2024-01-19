@@ -12,13 +12,22 @@ import json
 
 os.environ["OPENAI_API_KEY"] = "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"
 
+"""interfaccia langchain per creare un agent che impementa un LLM preaddestrato di OpenAI.
+Riceve in input le richieste dell'utente e la tabella Activity convertita in stringa"""
 
 def copilot_chat_prompt(prompt_user, activities_string):
+    
+    class OutputParser(BaseOutputParser):
+        #Parse the output of an LLM call to a comma-separated list.
+        def parse(self, text: str):
+            #Parse the output of an LLM call.
+            return text.replace("\n", "\n")
+        
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", """sei un analizzatore di tabelle contententi attività ed un activities mentor."""),
         ("human", f"{prompt_user}\n{activities_string}")
     ])
-    chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") 
+    chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") | OutputParser()
     return (chain.invoke({}))
     
     

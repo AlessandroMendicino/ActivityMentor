@@ -15,11 +15,9 @@ from datetime import datetime
 """TODO:
 - risolvere problemi sessione utente
 - aggiungere gestione admin/utentiStandard
-- implementazione IA
-- implementazione ricerca per mese (opzionale)"""
+"""
 
 app = create_app()
-
 
 @app.route('/profile')
 @login_required
@@ -32,8 +30,8 @@ def login():
 
 @app.route('/login', methods=['GET','POST'])
 def login_post():
-    """For GET requests, display the login form. 
-    For POSTS, login the current user by processing the form."""
+    #For GET requests, display the login form. 
+    #For POSTS, login the current user by processing the form.
     
     if request.method == "POST":
         email = request.form['email']
@@ -46,7 +44,7 @@ def login_post():
         else:
             flash("wrong email or password!")
             return render_template('login.html')
-
+        
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -55,6 +53,7 @@ def signup():
 def signup_post():
     #TODO: add check password confirmed
     #TODO: add tutor/stage status
+    
     # code to validate and add user to database goes here
     username = request.form['username']
     email = request.form['email']
@@ -80,7 +79,6 @@ def signup_post():
         
     return redirect(url_for('login'))
 
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -102,6 +100,7 @@ def logout():
 @app.route('/activityHome', methods=['GET','POST'])
 @login_required
 def activityHome():
+    #TODO: bugfix no date event
     
     activity = None
     date_activity = None
@@ -118,7 +117,9 @@ def activityHome():
             db.session.add(new_activity)
             db.session.commit()
         
-    return render_template('index.html', activity=activity, date_activity=date_activity, username=username)
+        return render_template('index.html', activity=activity, date_activity=date_activity, username=username)
+    return render_template('index.html')
+    
 
 
 #view all activity for current-user
@@ -128,8 +129,6 @@ def activityHome():
 def viewActivity():
     user = User.query.filter_by(id=current_user.id).first()
     activities = Activity.query.filter_by(user_id=current_user.id).all()
-    #for act in activities:
-        #print(act.description, act.date)
     return render_template('index.html', activities=activities)
 
 
@@ -143,7 +142,7 @@ def AiCopilot():
     response = None
     
     if request.method == "POST":
-        activities = Activity.query.filter_by(user_id=1).all()
+        activities = Activity.query.filter_by(user_id=current_user.id).all() #current_id on function
         result_string = '\n'.join([f'{result.date}: {result.description}' for result in activities])
         input_utente = request.form["input_utente_chat"]
         response = copilot_chat_prompt(input_utente, result_string)

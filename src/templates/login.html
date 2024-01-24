@@ -101,7 +101,7 @@
                 </div>
               {% endif %}
             {% endwith %}
-          <form class="form" method="post" action="{{url_for('login_post')}}">
+          <form class="form" method="post" action="{{url_for('auth.login_post')}}">
             <p class="text-center text-white font-weight-bold">STAGEACT login</p>
             <div class="form-group">
               <div class="input-group">
@@ -131,7 +131,7 @@
               <button class="button1" type="submit">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </button>
-              <a class="button2" href= "{{ url_for('signup_post') }}">sign Up</a>
+              <a class="button2" href= "{{ url_for('auth.signup_post') }}">sign Up</a>
             </div>
           </form>
         </div>

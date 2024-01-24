@@ -75,7 +75,7 @@
                 </div>
             {% endif %}
         {% endwith %}
-        <form class="form" method="post" action="{{url_for('signup')}}">
+        <form class="form" method="post" action="{{url_for('auth.signup')}}">
             <p class="text-center text-white font-weight-bold">STAGEACT - sign up</p>
             <div class="form-group">
                 <div class="input-group">
@@ -130,7 +130,7 @@
             </div>
         </form>
         <div class="text-center">
-            <a href="{{url_for('login')}}" class="btn btn-secondary">Login</a>
+            <a href="{{url_for('auth.login')}}" class="btn btn-secondary">Login</a>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

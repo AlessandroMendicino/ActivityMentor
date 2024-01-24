@@ -1,5 +1,5 @@
 from __init__ import db, create_app
-from DBmanager import User, Activity
+from models import User, Activity
 from datetime import date
 from APIclient import copilot_chat_prompt
 
@@ -48,7 +48,6 @@ class sampleDBmanager():
             attività = Activity.query.filter(db.extract('month', Activity.date) == 2).all()
         for act in attività:
             print(act.id, act.date, act.description) 
-    
 
 
 """use this module for testing and debug"""

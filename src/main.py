@@ -4,9 +4,8 @@ from flask import (Flask, render_template,
                 session, Blueprint)
 from APIclient import copilot_chat_prompt
 import json
-from __init__ import db, create_app
-#from __initi__ import app, db
-from DBmanager import User, Activity
+from models import User, Activity
+from __init__ import db
 from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, current_user, logout_user
 from datetime import datetime
@@ -17,87 +16,15 @@ from datetime import datetime
 - aggiungere gestione admin/utentiStandard
 """
 
-app = create_app()
-
-@app.route('/profile')
-@login_required
-def profile():
-    return 'Profile'
-
-@app.route('/')
-def login():
-    return render_template('login.html')
-
-@app.route('/login', methods=['GET','POST'])
-def login_post():
-    #For GET requests, display the login form. 
-    #For POSTS, login the current user by processing the form.
-    
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
-        
-        user = User.query.filter_by(email=email).first()
-        if user and check_password_hash(user.password_hash, password):
-            login_user(user, remember=True)
-            return redirect(url_for('activityHome'))
-        else:
-            flash("wrong email or password!")
-            return render_template('login.html')
-        
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
-
-@app.route('/signup', methods=['POST'])
-def signup_post():
-    #TODO: add check password confirmed
-    #TODO: add tutor/stage status
-    
-    # code to validate and add user to database goes here
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
-
-    user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
-
-    if username and email and password:
-        try:
-            # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-            new_user = User(username=username, email=email)
-            new_user.set_password(password)
-
-            # add the new user to the database
-            db.session.add(new_user)
-            db.session.commit()
-        except:
-            flash('Email address already exists')
-            return render_template('signup.html')
-    else:
-        flash('do not enter empty fields')
-        return render_template('signup.html')
-        
-    return redirect(url_for('login'))
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user(current_user)
-    session.clear()
-    return redirect(url_for('login'))
-
-
-
-
-
-"""app feature - route """
+#app = create_app()
+main = Blueprint('main', __name__)
 
 
 
 ##add new activity for current user 
 
-@app.route('/index', methods=['GET', 'POST'])
-@app.route('/activityHome', methods=['GET','POST'])
+@main.route('/index', methods=['GET', 'POST'])
+@main.route('/activityHome', methods=['GET','POST'])
 @login_required
 def activityHome():
     #TODO: bugfix no date event
@@ -124,7 +51,7 @@ def activityHome():
 
 #view all activity for current-user
 
-@app.route('/viewActivity')
+@main.route('/viewActivity')
 @login_required
 def viewActivity():
     user = User.query.filter_by(id=current_user.id).first()
@@ -136,7 +63,7 @@ def viewActivity():
 
 #AiCopilot
 
-@app.route('/AiCopilot', methods=["GET", "POST"])
+@main.route('/AiCopilot', methods=["GET", "POST"])
 @login_required
 def AiCopilot():
     response = None
@@ -150,12 +77,10 @@ def AiCopilot():
         print(response)
             #return render_template('index.html', response=response)
             
-    return render_template("index.html", response=response)
+    return render_template("index.html", response=response, hide_spinner=True)
     
     
 
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)

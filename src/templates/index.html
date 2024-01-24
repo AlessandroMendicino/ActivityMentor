@@ -46,7 +46,7 @@
 
         .btn-primary:hover {
             background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
-            /*border-color: #ffffff;
+            /*border-color: #ffffff; */
         }
 
         .btn-secondary {
@@ -82,12 +82,12 @@
             <div class="collapse navbar-collapse" id="navbarMenuHeroA">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="{{ url_for('profile') }}" class="nav-link">
+                        <a href="{{ url_for('auth.profile') }}" class="nav-link">
                             {{ current_user.username }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('login') }}" class="nav-link">
+                        <a href="{{ url_for('auth.login') }}" class="nav-link">
                                 logout
                         </a>
                     </li>
@@ -103,7 +103,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Inserisci attività</h5>
-                        <form method="post" action="{{ url_for('activityHome')}}">
+                        <form method="post" action="{{ url_for('main.activityHome')}}">
                             <div class="mb-3">
                                 <label for="activityInput" class="form-label">Attività</label>
                                 <input type="text" class="form-control" id="activityInput" name="activityInput" placeholder="Inserisci attività">
@@ -113,8 +113,8 @@
                                 <input type="text" class="form-control" id="dateInput" name="dateInput" placeholder="Seleziona una data">
                             </div>
                             <button type="submit" class="btn btn-primary">Inserisci attività</button>
-                            <a type="submit" class="btn btn-secondary" href="{{url_for('viewActivity')}}" onclick="showTable()">Visualizza tutte le attività</a>
-                            <a type="submit" class="btn btn-secondary" href="{{url_for('activityHome')}}" onclick="hideTable()">Nascondi attività</a>
+                            <a type="submit" class="btn btn-secondary" href="{{url_for('main.viewActivity')}}" onclick="showTable()">Visualizza tutte le attività</a>
+                            <a type="submit" class="btn btn-secondary" href="{{url_for('main.activityHome')}}" onclick="hideTable()">Nascondi attività</a>
                             <div class="row mt-3">
                                 <div class="col">
                                     {% if activities %}
@@ -164,25 +164,31 @@
                         </table>
                     </div>
                 </div>
-                <form method="post" action="{{ url_for('AiCopilot')}}">
+                <form method="post" action="{{ url_for('main.AiCopilot')}}" id="chatForm">
                     <div class="row mt-3">
-                        <div class="col-md-12 mt-md-4">
+                        <div class="col-md-12 mt-md-5">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">ActivityMentor copilot - powered by GPT-4</h5>
-                                        <div class="mb-3">
-                                            <label for="chatMessage" class="form-label">ask me anythings about your activities</label>
-                                            <input type="text" class="form-control" id="input_utente_chat" name="input_utente_chat" placeholder="here...">
+                                    <div class="mb-3">
+                                        <label for="chatMessage" class="form-label">ask me anything about your activities</label>
+                                        <input type="text" class="form-control" id="input_utente_chat" name="input_utente_chat" placeholder="here...">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary" id="inviaButton" onclick="inviaModulo()">Invia</button>
+                                        <div id="spinner" style="display: none;">
+                                            <div class="spinner-border text-danger" role="status">
+                                                <span class="visually-hidden">analizzo le tue attività...</span>
+                                            </div>
                                         </div>
-                                        <a type="submit" class="btn btn-primary" href="{{url_for('AiCopilot')}}">Invia</a>
-                                        <br>
-                                        <br>
-                                        <textarea class="form-control" id="chat_response" name="chat_response" rows="5">{{ response }}</textarea>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <textarea class="form-control" id="chat_response" name="chat_response" rows="5">{{ response }}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </form>                
             </div>
         </div> 
     </div>
@@ -194,6 +200,14 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
+        //funzione per chatCopilot
+        function inviaModulo() {
+            // Mostra lo spinner
+            document.getElementById("spinner").style.display = "block";
+    
+            // Avvia la sottomissione del modulo quando viene cliccato il pulsante "Invia"
+            document.getElementById("chatForm").submit();
+        }
         // Inizializza il campo della data con flatpickr
         flatpickr("#dateInput", { dateFormat: "Y-m-d" });
 
@@ -209,5 +223,11 @@
             table.style.display = "none";
         }
     </script>
+    {% if hide_spinner %}
+    <script>
+        // Nascondi lo spinner dopo aver ricevuto la risposta
+        document.getElementById("spinner").style.display = "none";
+    </script>
+    {% endif %}
 </body>
 </html>

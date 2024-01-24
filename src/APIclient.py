@@ -10,7 +10,7 @@ from langchain.schema import HumanMessage, BaseOutputParser
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 """interfaccia langchain per creare un agent che impementa un LLM preaddestrato di OpenAI.
 Riceve in input le richieste dell'utente e la tabella Activity convertita in stringa"""
@@ -18,17 +18,23 @@ Riceve in input le richieste dell'utente e la tabella Activity convertita in str
 def copilot_chat_prompt(prompt_user, activities_string):
     
     class OutputParser(BaseOutputParser):
-        #Parse the output of an LLM call to a comma-separated list.
+        """Parses the output of an LLM call to a comma-separated list."""
+        
         def parse(self, text: str):
-            #Parse the output of an LLM call.
+            """Parses the output of an LLM call."""
             return text.replace("\n", "\n")
         
+    # Create a chat prompt template with system and human messages
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", """sei un analizzatore di tabelle contententi attività ed un activities mentor."""),
         ("human", f"{prompt_user}\n{activities_string}")
     ])
+    
+    # Chain the chat prompt with an OpenAI model and the output parser
     chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") | OutputParser()
-    return (chain.invoke({}))
+    
+    # Invoke the chain to process the chat prompt and return the result
+    return chain.invoke({})
     
     
     

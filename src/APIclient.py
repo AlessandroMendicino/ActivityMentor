@@ -10,9 +10,41 @@ from langchain.schema import HumanMessage, BaseOutputParser
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "INSERT YOUR API KEY"
+
+"""interfaccia langchain per creare un agent che impementa un LLM preaddestrato di OpenAI.
+Riceve in input le richieste dell'utente e la tabella Activity convertita in stringa"""
+
+def copilot_chat_prompt(prompt_user, activities_string):
+    
+    class OutputParser(BaseOutputParser):
+        """Parses the output of an LLM call to a comma-separated list."""
+        
+        def parse(self, text: str):
+            """Parses the output of an LLM call."""
+            return text.replace("\n", "\n")
+        
+    # Create a chat prompt template with system and human messages
+    chat_prompt = ChatPromptTemplate.from_messages([
+        ("system", """sei un analizzatore di tabelle contententi attività ed un activities mentor."""),
+        ("human", f"{prompt_user}\n{activities_string}")
+    ])
+    
+    # Chain the chat prompt with an OpenAI model and the output parser
+    chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") | OutputParser()
+    
+    # Invoke the chain to process the chat prompt and return the result
+    return chain.invoke({})
+    
+    
+    
 
 
+
+
+
+
+"""
 def simple_chat_prompt():
     
     
@@ -25,14 +57,14 @@ def simple_chat_prompt():
     text = json_to_string()
     
     #class CommaSeparatedListOutputParser(BaseOutputParser):
-        #"""Parse the output of an LLM call to a comma-separated list."""
+        #Parse the output of an LLM call to a comma-separated list.
         #def parse(self, text: str):
-            #"""Parse the output of an LLM call."""
+            #Parse the output of an LLM call.
             #return text.strip().split(", ")
     human_template = "{text}"
 
     chat_prompt = ChatPromptTemplate.from_messages([
-        ("system", """sei un assistente virtuale che analizza e descrive le attività svolte nei mesi di studio e lavoro di un utente stagista 
+        ("system", sei un assistente virtuale che analizza e descrive le attività svolte nei mesi di studio e lavoro di un utente stagista 
                     e poi fornisce suggerimenti per continuare l'attività di stage. 
                     Riceverai dall'utente un filejson convertito in stringa, 
                     c'è una colonna data ed una colonna attività, dalle tuple puoi ricavare a seconda del mese quali attività sono state svolte
@@ -40,8 +72,8 @@ def simple_chat_prompt():
                     cosa ha svolto l'utente a seconda del mese.
                     Successivamente in base all'analisi fornisci un consiglio di roadmap d'apprendimento in base agli argomenti studiati nei mesi 
                     oppure dei tool alternativi a quelli già studiati ed utili al lavoro analizzando sempre le attività. 
-                    Sottolinando anche quali nuovi argomenti possono essere più utili da studiare e quali no, e come perfezionare le skill personali e con quali esercitazioni."""),
+                    Sottolinando anche quali nuovi argomenti possono essere più utili da studiare e quali no, e come perfezionare le skill personali e con quali esercitazioni.),
         ("human", human_template),
     ])
     chain = chat_prompt | ChatOpenAI(model_name="gpt-3.5-turbo") #| CommaSeparatedListOutputParser()
-    return (chain.invoke({"text":text}))
+    return (chain.invoke({"text":text})) """

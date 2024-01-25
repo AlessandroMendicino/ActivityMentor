@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STAGEACT Home</title>
+    <title>ActivityMentor Home</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="src/static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/static/icons/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <style>
         body {
             background-color: #dddddd; /* Colore di sfondo */
@@ -46,7 +50,7 @@
 
         .btn-primary:hover {
             background-color: #ff0000; /* Cambia il colore al passaggio del mouse */
-            /*border-color: #ffffff;
+            /*border-color: #ffffff; */
         }
 
         .btn-secondary {
@@ -74,7 +78,7 @@
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">STAGEACT     </a>
+            <a class="navbar-brand" href="#">ActivityMentor     </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenuHeroA" aria-controls="navbarMenuHeroA" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -82,12 +86,12 @@
             <div class="collapse navbar-collapse" id="navbarMenuHeroA">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="{{ url_for('profile') }}" class="nav-link">
+                        <a href="{{ url_for('auth.profile') }}" class="nav-link">
                             {{ current_user.username }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('login') }}" class="nav-link">
+                        <a href="{{ url_for('auth.login') }}" class="nav-link">
                                 logout
                         </a>
                     </li>
@@ -103,7 +107,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Inserisci attività</h5>
-                        <form method="post" action="{{ url_for('activityHome')}}">
+                        <form method="post" action="{{ url_for('main.activityHome')}}">
                             <div class="mb-3">
                                 <label for="activityInput" class="form-label">Attività</label>
                                 <input type="text" class="form-control" id="activityInput" name="activityInput" placeholder="Inserisci attività">
@@ -112,18 +116,31 @@
                                 <label for="dateInput" class="form-label">Data</label>
                                 <input type="text" class="form-control" id="dateInput" name="dateInput" placeholder="Seleziona una data">
                             </div>
-                            <div class="mb-3">
-                                <label for="selectChoice" class="form-label">Ricerca per mese</label>
-                                <select class="form-select" id="selectChoice">
-                                    <option value="scelta1">Gennaio</option>
-                                    <option value="scelta2">Febbraio</option>
-                                    <option value="scelta2">Marzo</option>
-                                    <option value="scelta2">Aprile</option>
-                                    <option value="scelta2">Maggio</option>
-                                    <!-- Aggiungi altre opzioni secondo necessità -->
-                                </select>
-                            </div>
                             <button type="submit" class="btn btn-primary">Inserisci attività</button>
+                            <a type="submit" class="btn btn-secondary" href="{{url_for('main.viewActivity')}}" onclick="showTable()">Visualizza tutte le attività</a>
+                            <a type="submit" class="btn btn-secondary" href="{{url_for('main.activityHome')}}" onclick="hideTable()">Nascondi attività</a>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {% if activities %}
+                                        <table class="table table-hover table-bordered" id="allActivitiesTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">data</th>
+                                                    <th scope="col">attività</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for act in activities %}
+                                                    <tr>
+                                                        <td>{{ act.date }}</td>
+                                                        <td>{{ act.description }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -151,47 +168,35 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <form method="POST" action="{{url_for('viewActivity')}}">
-            <div class="col-md-6 mt-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row mt-3">
-                            <div class="col">
-                                <a type="submit" class="btn btn-secondary" href="{{url_for('viewActivity')}}">Visualizza tutte le attività</a>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col">
-                                <h5 class="card-title">Tutte le attività</h5>
-                                {% if activities %}
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">data</th>
-                                                <th scope="col">attività</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for act in activities %}
-                                                <tr>
-                                                    <td>{{ act.date }}</td>
-                                                    <td>{{ act.description }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                {% endif %}
+                <form method="post" action="{{ url_for('main.AiCopilot')}}" id="chatForm">
+                    <div class="row mt-3">
+                        <div class="col-md-12 mt-md-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">ActivityMentor copilot - powered by GPT-4</h5>
+                                    <div class="mb-3">
+                                        <label for="chatMessage" class="form-label">ask me anything about your activities</label>
+                                        <input type="text" class="form-control" id="input_utente_chat" name="input_utente_chat" placeholder="here...">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary" id="inviaButton" onclick="inviaModulo()">Invia</button>
+                                        <div id="spinner" style="display: none;">
+                                            <div class="spinner-border text-danger" role="status">
+                                                <span class="visually-hidden">analizzo le tue attività...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <textarea class="form-control" id="chat_response" name="chat_response" rows="5">{{ response }}</textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>    
-        </form>
-    </div>  
+                </form>                
+            </div>
+        </div> 
+    </div>
+
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -199,8 +204,34 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
+        //funzione per chatCopilot
+        function inviaModulo() {
+            // Mostra lo spinner
+            document.getElementById("spinner").style.display = "block";
+    
+            // Avvia la sottomissione del modulo quando viene cliccato il pulsante "Invia"
+            document.getElementById("chatForm").submit();
+        }
         // Inizializza il campo della data con flatpickr
         flatpickr("#dateInput", { dateFormat: "Y-m-d" });
+
+          // Funzione per mostrare la tabella delle attività
+        function showTable() {
+            var table = document.getElementById("allActivitiesTable");
+            table.style.display = "table";
+        }
+
+        // Funzione per nascondere la tabella delle attività
+        function hideTable() {
+            var table = document.getElementById("allActivitiesTable");
+            table.style.display = "none";
+        }
     </script>
+    {% if hide_spinner %}
+    <script>
+        // Nascondi lo spinner dopo aver ricevuto la risposta
+        document.getElementById("spinner").style.display = "none";
+    </script>
+    {% endif %}
 </body>
 </html>

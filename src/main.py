@@ -14,6 +14,7 @@ from datetime import datetime
 """TODO:
 - risolvere problemi sessione utente
 - aggiungere gestione admin/utentiStandard
+- aggiungere excell doc generator
 """
 
 #app = create_app()
@@ -21,7 +22,8 @@ main = Blueprint('main', __name__)
 
 
 
-##add new activity for current user 
+
+"""add new activity for current user """
 
 @main.route('/index', methods=['GET', 'POST'])
 @main.route('/activityHome', methods=['GET','POST'])
@@ -49,7 +51,7 @@ def activityHome():
     
 
 
-#view all activity for current-user
+"""view all activity for current-user"""
 
 @main.route('/viewActivity')
 @login_required
@@ -61,7 +63,7 @@ def viewActivity():
 
 
 
-#AiCopilot
+""" AiCopilot function call """
 
 @main.route('/AiCopilot', methods=["GET", "POST"])
 @login_required

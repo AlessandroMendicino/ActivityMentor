@@ -10,6 +10,9 @@ from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, current_user, logout_user
 from datetime import datetime
 
+    
+
+""" This module implement login and signup routes"""
 
 auth = Blueprint('auth', __name__)
 
@@ -36,6 +39,9 @@ def login_post():
             return redirect(url_for('auth.login'))
         
 
+@auth.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
@@ -77,4 +83,4 @@ def logout():
 @auth.route('/profile')
 @login_required
 def profile():
-    return '<H1> PROFILE WORK IN PROGRESS </H1>'
+    return '<H1> PROFILE WORK IN PROGRESS </H1>' #TODO add profile template

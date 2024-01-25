@@ -4,17 +4,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
 
+"""configuration, app init and db init, blueprint registration and login manager""" 
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 
 
 def create_app():
-    app = Flask(__name__, template_folder=r"C:\Users\alessandro.mendicino\PYTHON_PROJECTS\STAGEACTS\src\templates", static_folder=r"C:\Users\alessandro.mendicino\PYTHON_PROJECTS\STAGEACTS\src\static")
+    app = Flask(__name__, template_folder=os.path.abspath("./src/templates"), static_folder=os.path.abspath("./src/static")) 
 
 
     app.config['SECRET_KEY'] = os.urandom(32) #dot not send this in production src code, use ambient variable
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///STAGEACTS.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ActivityMentor.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     

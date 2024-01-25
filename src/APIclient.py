@@ -10,7 +10,7 @@ from langchain.schema import HumanMessage, BaseOutputParser
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "INSERT YOUR API KEY"
 
 """interfaccia langchain per creare un agent che impementa un LLM preaddestrato di OpenAI.
 Riceve in input le richieste dell'utente e la tabella Activity convertita in stringa"""

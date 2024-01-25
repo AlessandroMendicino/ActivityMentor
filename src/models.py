@@ -5,7 +5,7 @@ import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from __init__ import db
 
-"""this module implement an ORM for SQLAlchemy"""
+"""this module implement an ORM for SQLAlchemy."""
 
 
 class User(db.Model, UserMixin):    

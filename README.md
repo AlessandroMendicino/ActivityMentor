@@ -7,6 +7,8 @@ Welcome to the ActivityMentor web app! This Flask-based web application allows u
 
 - **User Authentication:** Users can register and log in securely to access their personalized dashboard.
 
+![Alt text](screenshots\WEBAPP-LOGIN.png?raw=true "Login")
+
 - **Activity Recording:** Users can record their daily activities through a user-friendly interface in the home section.
 
 - **Copilot AI Integration:** Utilizing the OpenAI API, the Copilot AI offers personalized queries and advice based on user input and activity history.

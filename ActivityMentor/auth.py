@@ -5,7 +5,7 @@ from flask import (Flask, render_template,
 from APIclient import copilot_chat_prompt
 import json
 from models import User, Activity
-from __init__ import db
+from app import db
 from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, current_user, logout_user
 from datetime import datetime

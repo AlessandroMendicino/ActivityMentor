@@ -3,7 +3,7 @@ from flask_login import UserMixin
 import datetime
 import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from __init__ import db
+from app import db
 
 """this module implement an ORM for SQLAlchemy."""
 

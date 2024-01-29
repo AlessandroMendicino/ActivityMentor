@@ -1,4 +1,4 @@
-from __init__ import db, create_app
+from app import db, app
 from models import User, Activity
 from datetime import date
 from APIclient import copilot_chat_prompt
@@ -6,7 +6,6 @@ from APIclient import copilot_chat_prompt
 
 """use this module to initialize db"""
 
-app = create_app()
 
 class sampleDBmanager():
     

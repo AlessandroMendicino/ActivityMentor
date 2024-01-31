@@ -1,8 +1,8 @@
 import openai
 import os
 from jproperties import Properties
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
+from langchain_community.llms import OpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain, LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.prompts.chat import ChatPromptTemplate
@@ -10,7 +10,7 @@ from langchain.schema import HumanMessage, BaseOutputParser
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"] = "INSERT YOUR API KEY"
+os.environ["OPENAI_API_KEY"] = "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"
 
 """interfaccia langchain per creare un agent che impementa un LLM preaddestrato di OpenAI.
 Riceve in input le richieste dell'utente e la tabella Activity convertita in stringa"""

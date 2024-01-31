@@ -1,4 +1,5 @@
-from app import db, app
+from app import app
+from __init__ import db
 from models import User, Activity
 from datetime import date
 from APIclient import copilot_chat_prompt
@@ -60,10 +61,10 @@ class sampleDBmanager():
 DB = sampleDBmanager()
 
 #RUN THIS FUNCTION 
-DB.createTables()
+#DB.createTables()
 
 #DB.add_data()
-#DB.clear_data()
+DB.clear_data()
 #DB.view_data()
 
 

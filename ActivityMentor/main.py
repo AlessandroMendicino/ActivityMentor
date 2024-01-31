@@ -4,12 +4,13 @@ from flask import (Flask, render_template,
                 session, Blueprint)
 from APIclient import copilot_chat_prompt
 import json
+import os
 from models import User, Activity
-from app import db
+from __init__ import db, app
 from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, current_user, logout_user
 from datetime import datetime
-
+import pandas as pd
 
 """TODO:
 - risolvere problemi sessione utente
@@ -18,8 +19,6 @@ from datetime import datetime
 """
 
 main = Blueprint('main', __name__)
-
-
 
 
 
@@ -83,6 +82,28 @@ def AiCopilot():
     
     
 
+"""excell file processing"""
 
+@app.route('/upload_file', methods=['POST'])
+def upload_file():
+    if 'fileInput' not in request.files:
+        return redirect(request.url)
+    
+    file = request.files['fileInput']
+    
+    if file.filename == '':
+        return redirect(request.url)
+
+    if file:
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        
+        df = pd.read_excel(file)
+        for act, date in zip(df["ATTIVITA'"], df["DATA"]):
+            if not pd.isna(act):
+                new_activity = Activity(date=date, description=str(act), user_id=current_user.id)
+                db.session.add(new_activity)
+                db.session.commit()
+
+    return redirect(url_for('main.activityHome'))
 
 

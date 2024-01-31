@@ -1,4 +1,4 @@
-from __init__ import db, app
+from __init__ import app
 
 def blueprints():
     from auth import auth as auth_blueprint

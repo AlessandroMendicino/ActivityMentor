@@ -10,7 +10,7 @@ from langchain.schema import HumanMessage, BaseOutputParser
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"] = "INSERT HERE YOUR OPENAI API KEY"
+os.environ["OPENAI_API_KEY"] = "INSERT HERE YOUR OPEN AI API KEY"
 
 """interfaccia langchain per creare un agent che impementa un LLM preaddestrato di OpenAI.
 Riceve in input le richieste dell'utente e la tabella Activity convertita in stringa"""
@@ -26,7 +26,9 @@ def copilot_chat_prompt(prompt_user, activities_string):
         
     # Create a chat prompt template with system and human messages
     chat_prompt = ChatPromptTemplate.from_messages([
-        ("system", """sei un analizzatore di tabelle contententi attività ed un activities mentor."""),
+        ("system", """Sei ActivityMentor, Sei un assistente virtuale ed un analizzatore di tabelle contententi attività. 
+            Rispondi alle richieste dell'utente,
+            ed In base alle attività fornisci anche consigli su possibili attività future quando richiesto."""),
         ("human", f"{prompt_user}\n{activities_string}")
     ])
     

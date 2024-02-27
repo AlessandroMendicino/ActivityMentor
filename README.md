@@ -81,4 +81,3 @@ This project is licensed under the [MIT License](LICENSE.md).
 Feel free to customize the README to better suit the specifics of your project and add any additional sections or details that you find relevant.
 Thanks to the OpenAI team for providing the powerful Copilot API.
 Special thanks to our contributors for their efforts in enhancing the ActivityMentor web app.
-Feel free to customize the README to better suit the specifics of your project and add any additional sections or details that you find relevant.
